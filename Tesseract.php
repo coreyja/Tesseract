@@ -22,10 +22,28 @@ function TesseractParserInit( Parser $parser ) {
  
 // Execute 
 function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) {
+	// $input will most likely be null since we will use the self closing XML tag
 
-	// Nothing exciting here, just escape the user-provided
-	// input and throw it back out again
-	return htmlspecialchars( $input . 'TESSERACT!!!!' );
+	// Create a string to return as the HTML
+	$toReturn = "";
+
+	// Add the conditional IE import to the return string
+	$toReturn .= '<!--[if IE]><script type="text/javascript" src="//cdn.jsdelivr.net/excanvas/r3/excanvas.compiled.js"></script><![endif]-->';
+
+	// Add the css import for Tesseract styling
+	$toReturn .= '<link rel="stylesheet" href="/extensions/Tesseract/css/style.css">';
+
+	
+	// Add the tabs that go on top of the Tesseract
+	$toReturn .= '<ul class="tabs"><li class="tab active"><a href="#" id="showCourses">Show Courses</a></li><li class="tab"><a href="#" id="showConcepts">Show Concepts</a></li></ul>';
+
+	// Add the actual Canvas that the Tesseract will display inside
+	$toReturn .= '<canvas id="tesseract" width="1000" height="600"></canvas>';
+
+	// Add the js import for the Tesseract
+	$toReturn .= '<script src="/Tesseract/arbor.js"></script><script src="/Tesseract/graphics.js"></script><script src="/Tesseract/renderer.js"></script><script src="/Tesseract/main.js"></script>';
+	
+	return $toReturn;
 }
 
 
