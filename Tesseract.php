@@ -49,7 +49,7 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 
 	foreach( $args as $name => $value ) {
 		// $attr[] = '<strong>' . htmlspecialchars( $name ) . '</strong> = ' . htmlspecialchars( $value );
-		$toReturn .= '<script>' . htmlspecialchars( $name ) . ' = ' . htmlspecialchars( $value ) . ';</script>';
+		$toReturn .= '<script>' . $name . ' = "' . $value . '";</script>';
 	}
 	
 	// Add the js import for the Tesseract
