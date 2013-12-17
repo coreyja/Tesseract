@@ -73,6 +73,66 @@ getAndDisplayCourses = function() {
 	});
 }
 
+getAndDisplayCourse = function(course) {
+	$.ajax({
+		url: '/api.php',
+		data: {
+			'action': 'ask',
+			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has courses|?Department' ,
+			'format': 'json',
+		},
+		success: function(data) {
+
+
+			var sys = arbor.ParticleSystem(1000, 400, 0.5);
+			sys.parameters({gravity:true});
+			sys.renderer = Renderer("#tesseract");
+
+			data = data['query']['results'];
+
+			var nodeData = {
+				nodes: {},
+				edges: {},
+			};
+
+			for (course in data) {
+
+				$.ajax({
+					url: '/api.php',
+				});
+
+				prereqs = data[course]['printouts']['Has courses'];
+
+				output = [];
+
+				nodeData['nodes'][course] = {
+					color: 'red',
+					shape: 'IDontWantAFuckingDot',
+					label: course,
+					link: data[course]['fullurl'],
+				};
+
+				for (i = 0; i < prereqs.length; i++){
+					if (prereqs[i]['fulltext'] == '') {
+						continue;
+					}
+					nodeData['edges'][course] = {};
+					nodeData['edges'][course][prereqs[i]['fulltext']] = {
+						directed: true,
+						color: "#000",
+					};
+				}
+
+			}
+
+			sys.graft(nodeData);
+
+
+
+		},
+	});
+}
+
 clearCanvas = function() {
 	var canvas = $('#tesseract').get(0);
 	var ctx = canvas.getContext("2d");
@@ -136,10 +196,13 @@ jQuery(function($) {
 	var width = $('canvas#tesseract').parent().outerWidth()
 	$('canvas#tesseract').attr('width', width);
 
-	console.log(coursenumber);
+	if (coursenumer === undefined){
+		getAndDisplayCourses();
+	} else {
+		getAndDisplayCourse(coursenumer);
+	}
 
-
-	getAndDisplayCourses();
+	
 
 	$('a#showCourses').click(function () {
 		clearCanvas();
