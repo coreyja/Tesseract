@@ -196,10 +196,10 @@ jQuery(function($) {
 	var width = $('canvas#tesseract').parent().outerWidth()
 	$('canvas#tesseract').attr('width', width);
 
-	if (coursenumer === undefined){
+	if (typeof coursenumber === 'undefined'){
 		getAndDisplayCourses();
 	} else {
-		getAndDisplayCourse(coursenumer);
+		getAndDisplayCourse(coursenumber);
 	}
 
 	
