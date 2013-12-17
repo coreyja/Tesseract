@@ -1,0 +1,28 @@
+ul.tabs {
+  list-style: none;
+  
+  overflow: hidden;
+}
+
+li.tab {
+  float: left;
+  border-radius: 6px 6px 0 0;
+  border-color: #b0b0b0;
+  border-width: 1px;
+  border-bottom-width: 0;
+  border-style: solid;
+  
+  padding: 10px;
+  margin-left: 5px;
+}
+
+li.tab a {
+  color: #000;
+  text-decoration: none;
+  
+  font-size: 22px;
+}
+
+li.tab.active {
+  background: #ececec;
+}
