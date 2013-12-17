@@ -74,6 +74,8 @@ getAndDisplayCourses = function() {
 }
 
 getAndDisplayCourse = function(course) {
+	console.log("How many times?");	
+
 	$.ajax({
 		url: '/api.php',
 		data: {
@@ -195,6 +197,7 @@ jQuery(function($) {
 
 	var width = $('canvas#tesseract').parent().outerWidth()
 	$('canvas#tesseract').attr('width', width);
+
 
 	if (typeof coursenumber === 'undefined'){
 		getAndDisplayCourses();
