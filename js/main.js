@@ -110,7 +110,7 @@ getAndDisplayConcepts = function() {
 					shape: 'dot',
 					label: concept,
 					link: data[concept]['fullurl'],
-					color: '#'+Math.floor(Math.random()*16777215).toString(16),
+					color: 'red',
 				};
 
 				for (i = 0; i < related.length; i++){
