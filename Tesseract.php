@@ -41,7 +41,7 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 	$toReturn .= '<canvas id="tesseract" width="1000" height="600"></canvas>';
 
 	foreach( $args as $name => $value ) {
-		$toReturn .= '<script>' . htmlspecialchars( $name . ' = "' . htmlspecialchars( $value ) . '";</script>';
+		$toReturn .= '<script>' . htmlspecialchars( $name ). ' = "' . htmlspecialchars( $value ) . '";</script>';
 	}
 	
 	// Add the js import for the Tesseract
