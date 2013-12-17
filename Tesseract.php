@@ -39,17 +39,9 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 
 	// Add the actual Canvas that the Tesseract will display inside
 	$toReturn .= '<canvas id="tesseract" width="1000" height="600"></canvas>';
-	
-	// $courseNumber = null;
-	// if (array_key_exists('courseNumber', $args)){
-	// 	$courseNumber = $args['courseNumber'];
-
-	// 	$toReturn .= '<script>courseNumber = ' . $courseNumber . ';</script>';
-	// }
 
 	foreach( $args as $name => $value ) {
-		// $attr[] = '<strong>' . htmlspecialchars( $name ) . '</strong> = ' . htmlspecialchars( $value );
-		$toReturn .= '<script>' . $name . ' = "' . $value . '";</script>';
+		$toReturn .= '<script>' . htmlspecialchars( $name . ' = "' . htmlspecialchars( $value ) . '";</script>';
 	}
 	
 	// Add the js import for the Tesseract
