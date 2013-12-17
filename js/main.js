@@ -136,6 +136,8 @@ jQuery(function($) {
 	var width = $('canvas#tesseract').parent().outerWidth()
 	$('canvas#tesseract').attr('width', width);
 
+	console.log(courseNumber);
+
 
 	getAndDisplayCourses();
 
