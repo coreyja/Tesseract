@@ -118,10 +118,21 @@ getAndDisplayCourse = function(course) {
 					if (prereqs[i]['fulltext'] == '') {
 						continue;
 					}
+
+					var prereqTitle = prereqs[i]['fulltext'];
+					var prereqURL = prereqs[i]['fullurl'];
+
 					nodeData['edges'][course] = {};
-					nodeData['edges'][course][prereqs[i]['fulltext']] = {
+					nodeData['edges'][course][prereqTitle] = {
 						directed: true,
 						color: "#000",
+					};
+
+					nodeData['nodes'][prereqTitle] = {
+						color: 'red',
+						shape: 'IDontWantAFuckingDot',
+						label: prereqTitle,
+						link: prereqURL,
 					};
 				}
 
