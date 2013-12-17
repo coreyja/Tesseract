@@ -46,7 +46,7 @@ getAndDisplayCourses = function() {
 				output = [];
 
 				nodeData['nodes'][course] = {
-					color: getDepartmentColor(data[course]['printouts']['Department'][0]['fulltext']),
+					color: 'red',
 					shape: 'IDontWantAFuckingDot',
 					label: course,
 					link: data[course]['fullurl'],
