@@ -41,7 +41,7 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 	$toReturn .= '<canvas id="tesseract" width="1000" height="600"></canvas>';
 
 	// Add the js import for the Tesseract
-	$toReturn .= '<script src="/Tesseract/arbor.js"></script><script src="/Tesseract/graphics.js"></script><script src="/Tesseract/renderer.js"></script><script src="/Tesseract/main.js"></script>';
+	$toReturn .= '<script src="/extensions/Tesseract/js/arbor.js"></script><script src="/extensions/Tesseract/js/graphics.js"></script><script src="/extensions/Tesseract/js/renderer.js"></script><script src="/extensions/Tesseract/js/main.js"></script>';
 	
 	return $toReturn;
 }
