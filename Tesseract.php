@@ -35,7 +35,7 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 
 	
 	// Add the tabs that go on top of the Tesseract
-	$toReturn .= '<ul class="tabs"><li class="tab active"><a href="#" id="showCourses">Show Courses</a></li><li class="tab"><a href="#" id="showConcepts">Show Concepts</a></li></ul>';
+	//$toReturn .= '<ul class="tabs"><li class="tab active"><a href="#" id="showCourses">Show Courses</a></li><li class="tab"><a href="#" id="showConcepts">Show Concepts</a></li></ul>';
 
 	// Add the actual Canvas that the Tesseract will display inside
 	$toReturn .= '<canvas id="tesseract" width="1000" height="600"></canvas>';
