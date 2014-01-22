@@ -73,12 +73,16 @@ getAndDisplayCourses = function() {
 	});
 }
 
+int started = 0;
+
 nodeData = {
 	nodes: {},
 	edges: {},
 };
 
 getAndDisplayPrereqTree = function (course) {
+	started++;
+
 	$.ajax({
 		url: '/api.php',
 		data: {
@@ -134,7 +138,15 @@ getAndDisplayPrereqTree = function (course) {
 
 			}
 
-			// sys.graft(nodeData);
+			started--;
+
+			if (started === 0) {
+				var sys = arbor.ParticleSystem(1000, 400, 0.5);
+				sys.parameters({gravity:true});
+				sys.renderer = Renderer("#tesseract");
+
+				sys.graft(nodeData);
+			}
 
 
 
