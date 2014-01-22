@@ -113,7 +113,7 @@ getAndDisplayPrereqTree = function (course) {
 				output = [];
 
 				nodeData['nodes'][course] = {
-					color: getDepartmentColor(,
+					color: getDepartmentColor(dep),
 					shape: 'IDontWantAFuckingDot',
 					label: course,
 					link: data[course]['fullurl'],
