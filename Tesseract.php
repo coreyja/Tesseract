@@ -43,6 +43,9 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 	foreach( $args as $name => $value ) {
 		$toReturn .= '<script>' . htmlspecialchars( $name ). ' = "' . htmlspecialchars( $value ) . '";</script>';
 	}
+
+	// Put the title as the course number for js to read.
+	$toReturn .= '<script> coursenumber = "' . $parser->getTitle() . '";</script>';
 	
 	// Add the js import for the Tesseract
 	$toReturn .= '<script src="/extensions/Tesseract/js/arbor.js"></script><script src="/extensions/Tesseract/js/graphics.js"></script><script src="/extensions/Tesseract/js/renderer.js"></script><script src="/extensions/Tesseract/js/main.js"></script>';
