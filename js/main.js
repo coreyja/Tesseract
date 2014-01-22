@@ -108,11 +108,12 @@ getAndDisplayPrereqTree = function (course) {
 				// });
 
 				prereqs = data[course]['printouts']['Has courses'];
+				dep = data[course]['printouts']['Has departments'][0];
 
 				output = [];
 
 				nodeData['nodes'][course] = {
-					color: 'red',
+					color: getDepartmentColor(,
 					shape: 'IDontWantAFuckingDot',
 					label: course,
 					link: data[course]['fullurl'],
