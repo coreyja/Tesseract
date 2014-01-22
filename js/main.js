@@ -1,5 +1,5 @@
 getDepartmentColor = function(dep) {
-	console.log(dep);
+
 	if (dep === "Major in Computer Science"){
 		dep = 'Computer Science'
 	}
@@ -19,7 +19,7 @@ getAndDisplayCourses = function() {
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Courses]]|?Has courses|?Department',
+			'query': '[[Category:Courses]]|?Has courses|?Has departments',
 			'format': 'json',
 		},
 		success: function(data) {
@@ -43,11 +43,12 @@ getAndDisplayCourses = function() {
 				});
 
 				prereqs = data[course]['printouts']['Has courses'];
+				dep = data[course]['printouts']['Has departments'][0]['fulltext'];
 
 				output = [];
 
 				nodeData['nodes'][course] = {
-					color: 'red',
+					color: 'getDepartmentColor(dep)',
 					shape: 'IDontWantAFuckingDot',
 					label: course,
 					link: data[course]['fullurl'],
