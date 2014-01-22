@@ -89,9 +89,9 @@ getAndDisplayPrereqTree = function (course) {
 		success: function(data) {
 
 
-			var sys = arbor.ParticleSystem(1000, 400, 0.5);
-			sys.parameters({gravity:true});
-			sys.renderer = Renderer("#tesseract");
+			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
+			// sys.parameters({gravity:true});
+			// sys.renderer = Renderer("#tesseract");
 
 			data = data['query']['results'];
 
@@ -119,7 +119,10 @@ getAndDisplayPrereqTree = function (course) {
 						continue;
 					}
 
-					getAndDisplayPrereqTree(prereqs[i]['fulltext']);
+					if (! prereqs[i]['fulltext'] in nodeData['nodes']){
+						getAndDisplayPrereqTree(prereqs[i]['fulltext']);
+					}
+					
 
 					nodeData['edges'][course] = {};
 					nodeData['edges'][course][prereqs[i]['fulltext']] = {
@@ -130,7 +133,7 @@ getAndDisplayPrereqTree = function (course) {
 
 			}
 
-			sys.graft(nodeData);
+			// sys.graft(nodeData);
 
 
 
