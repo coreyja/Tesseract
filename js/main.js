@@ -73,7 +73,7 @@ getAndDisplayCourses = function() {
 	});
 }
 
-var nodeData = {
+nodeData = {
 	nodes: {},
 	edges: {},
 };
@@ -83,7 +83,7 @@ getAndDisplayPrereqTree = function (course) {
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has courses|?Department' ,
+			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has courses|?Department',
 			'format': 'json',
 		},
 		success: function(data) {
@@ -119,7 +119,8 @@ getAndDisplayPrereqTree = function (course) {
 						continue;
 					}
 
-					if (! prereqs[i]['fulltext'] in nodeData['nodes']){
+					if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
+						console.log('Recurze');
 						getAndDisplayPrereqTree(prereqs[i]['fulltext']);
 					}
 					
