@@ -73,9 +73,9 @@ getAndDisplayCourses = function() {
 	});
 }
 
-int started = 0;
+var started = 0;
 
-nodeData = {
+var nodeData = {
 	nodes: {},
 	edges: {},
 };
