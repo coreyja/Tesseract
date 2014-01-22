@@ -1,5 +1,6 @@
 getDepartmentColor = function(dep) {
-	if (dep == "Major in Computer Science"){
+	console.log(dep);
+	if (dep === "Major in Computer Science"){
 		dep = 'Computer Science'
 	}
 
