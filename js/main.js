@@ -73,6 +73,73 @@ getAndDisplayCourses = function() {
 	});
 }
 
+var nodeData = {
+	nodes: {},
+	edges: {},
+};
+
+getAndDisplayPrereqTree = function (course) {
+	$.ajax({
+		url: '/api.php',
+		data: {
+			'action': 'ask',
+			'query': '[[Category:Courses]]|?Has courses|?Department',
+			'format': 'json',
+		},
+		success: function(data) {
+
+
+			var sys = arbor.ParticleSystem(1000, 400, 0.5);
+			sys.parameters({gravity:true});
+			sys.renderer = Renderer("#tesseract");
+
+			data = data['query']['results'];
+
+			
+
+			for (course in data) {
+
+				// $.ajax({
+				// 	url: '/api.php',
+				// });
+
+				prereqs = data[course]['printouts']['Has courses'];
+
+				output = [];
+
+				nodeData['nodes'][course] = {
+					color: 'red',
+					shape: 'IDontWantAFuckingDot',
+					label: course,
+					link: data[course]['fullurl'],
+				};
+
+				for (i = 0; i < prereqs.length; i++){
+					if (prereqs[i]['fulltext'] == '') {
+						continue;
+					}
+
+					getAndDisplayPrereqTree(prereqs[i]['fulltext']);
+
+					nodeData['edges'][course] = {};
+					nodeData['edges'][course][prereqs[i]['fulltext']] = {
+						directed: true,
+						color: "#000",
+					};
+				}
+
+			}
+
+			sys.graft(nodeData);
+
+
+
+		},
+	});
+
+
+}
+
 getAndDisplayCourse = function(course) {
 	console.log("How many times?");	
 
@@ -210,10 +277,10 @@ jQuery(function($) {
 	$('canvas#tesseract').attr('width', width);
 
 
-	if (typeof coursenumber === 'undefined'){
+	if (coursenumber == 'Tesseract'){
 		getAndDisplayCourses();
 	} else {
-		getAndDisplayCourse(coursenumber);
+		getAndDisplayPrereqTree(coursenumber);
 	}
 
 	
