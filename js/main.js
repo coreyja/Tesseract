@@ -108,7 +108,7 @@ getAndDisplayPrereqTree = function (course) {
 				// });
 
 				prereqs = data[course]['printouts']['Has courses'];
-				dep = data[course]['printouts']['Has departments'][0];
+				dep = data[course]['printouts']['Has departments'][0]['fulltext'];
 
 				output = [];
 
