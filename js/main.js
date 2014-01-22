@@ -87,7 +87,7 @@ getAndDisplayPrereqTree = function (course) {
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has courses|?Department',
+			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has courses|?Has departments',
 			'format': 'json',
 		},
 		success: function(data) {
