@@ -166,7 +166,7 @@ getAndDisplayConceptPrereqTree = function (course) {
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Concepts]][[Name::~' +  course + ']]|?Has concepts',
+			'query': '[[Category:Concepts]][[' +  course + ']]|?Has concepts',
 			'format': 'json',
 		},
 		success: function(data) {
