@@ -374,8 +374,6 @@ jQuery(function($) {
 
 	if (coursenumber == 'Tesseract'){
 		getAndDisplayCourses();
-	} else if (isConcept) {
-		getAndDisplayConceptPrereqTree(coursenumber);
 	} else {
 		getAndDisplayPrereqTree(coursenumber);
 	}
