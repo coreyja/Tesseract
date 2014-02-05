@@ -166,7 +166,7 @@ getAndDisplayConceptPrereqTree = function (course) {
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Concept]][[Name::~' +  course + ']]|?Concepts',
+			'query': '[[Category:Concepts]][[Name::~' +  course + ']]|?Has concepts',
 			'format': 'json',
 		},
 		success: function(data) {
@@ -186,7 +186,7 @@ getAndDisplayConceptPrereqTree = function (course) {
 				// 	url: '/api.php',
 				// });
 
-				prereqs = data[course]['printouts']['Concepts'];
+				prereqs = data[course]['printouts']['Has concepts'];
 
 				output = [];
 
