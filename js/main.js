@@ -89,7 +89,7 @@ getAndDisplayPrereqTree = function (course) {
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has courses|?Has departments',
+			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has prerequisites|?Has departments',
 			'format': 'json',
 		},
 		success: function(data) {
@@ -109,13 +109,89 @@ getAndDisplayPrereqTree = function (course) {
 				// 	url: '/api.php',
 				// });
 
-				prereqs = data[course]['printouts']['Has courses'];
+				prereqs = data[course]['printouts']['Has prerequisites'];
 				dep = data[course]['printouts']['Has departments'][0]['fulltext'];
 
 				output = [];
 
 				nodeData['nodes'][course] = {
 					color: getDepartmentColor(dep),
+					shape: 'IDontWantAFuckingDot',
+					label: course,
+					link: data[course]['fullurl'],
+				};
+
+				for (i = 0; i < prereqs.length; i++){
+					if (prereqs[i]['fulltext'] == '') {
+						continue;
+					}
+
+					if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
+						console.log('Recurze');
+						getAndDisplayPrereqTree(prereqs[i]['fulltext']);
+					}
+					
+
+					nodeData['edges'][course] = {};
+					nodeData['edges'][course][prereqs[i]['fulltext']] = {
+						directed: true,
+						color: "#000",
+					};
+				}
+
+			}
+
+			started--;
+
+			if (started === 0) {
+				var sys = arbor.ParticleSystem(1000, 400, 0.5);
+				sys.parameters({gravity:true});
+				sys.renderer = Renderer("#tesseract");
+
+				sys.graft(nodeData);
+			}
+
+
+
+		},
+	});
+
+
+}
+
+getAndDisplayConceptPrereqTree = function (course) {
+	started++;
+
+	$.ajax({
+		url: '/api.php',
+		data: {
+			'action': 'ask',
+			'query': '[[Category:Concept]][[Name::~' +  course + ']]|?Concepts',
+			'format': 'json',
+		},
+		success: function(data) {
+
+
+			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
+			// sys.parameters({gravity:true});
+			// sys.renderer = Renderer("#tesseract");
+
+			data = data['query']['results'];
+
+			
+
+			for (course in data) {
+
+				// $.ajax({
+				// 	url: '/api.php',
+				// });
+
+				prereqs = data[course]['printouts']['Concepts'];
+
+				output = [];
+
+				nodeData['nodes'][course] = {
+					color: 'red',
 					shape: 'IDontWantAFuckingDot',
 					label: course,
 					link: data[course]['fullurl'],
