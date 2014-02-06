@@ -217,7 +217,7 @@ getAndDisplayPrereqConceptTree = function (course) {
 					};
 					
 
-					nodeData['edges'][course][prereqs[i]['fulltext']] = {
+					// nodeData['edges'][course][prereqs[i]['fulltext']] = {
 					// 	directed: true,
 					// 	color: "#000",
 					// };
