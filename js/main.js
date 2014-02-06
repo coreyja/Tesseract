@@ -212,7 +212,7 @@ getAndDisplayPrereqConceptTree = function (course) {
 					nodeData['nodes'][prereqs[i]['fulltext']] = {
 						color: 'red',
 						shape: 'IDontWantAFuckingDot',
-						label: course,
+						label: prereqs[i]['fulltext'],
 						link: prereqs[i]['fullurl'],
 					};
 					
