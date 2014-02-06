@@ -190,12 +190,12 @@ getAndDisplayPrereqConceptTree = function (course) {
 
 				output = [];
 
-				// nodeData['nodes'][course] = {
-				// 	color: getDepartmentColor(dep),
-				// 	shape: 'IDontWantAFuckingDot',
-				// 	label: course,
-				// 	link: data[course]['fullurl'],
-				// };
+				nodeData['nodes'][course] = {
+					color: getDepartmentColor(dep),
+					shape: 'IDontWantAFuckingDot',
+					label: course,
+					link: data[course]['fullurl'],
+				};
 
 				for (i = 0; i < prereqs.length; i++){
 					if (prereqs[i]['fulltext'] == '') {
@@ -208,11 +208,11 @@ getAndDisplayPrereqConceptTree = function (course) {
 					// }
 					
 
-					// nodeData['edges'][course] = {};
-					// nodeData['edges'][course][prereqs[i]['fulltext']] = {
-					// 	directed: true,
-					// 	color: "#000",
-					// };
+					nodeData['edges'][course] = {};
+					nodeData['edges'][course][prereqs[i]['fulltext']] = {
+						directed: true,
+						color: "#000",
+					};
 				}
 
 			}
