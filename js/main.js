@@ -159,6 +159,158 @@ getAndDisplayPrereqTree = function (course) {
 
 }
 
+getAndDisplayPrereqConceptTree = function (course) {
+	started++;
+
+	$.ajax({
+		url: '/api.php',
+		data: {
+			'action': 'ask',
+			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has concepts',
+			'format': 'json',
+		},
+		success: function(data) {
+
+
+			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
+			// sys.parameters({gravity:true});
+			// sys.renderer = Renderer("#tesseract");
+
+			data = data['query']['results'];
+
+			
+
+			for (course in data) {
+
+				// $.ajax({
+				// 	url: '/api.php',
+				// });
+
+				prereqs = data[course]['printouts']['Has concepts'];
+
+				output = [];
+
+				// nodeData['nodes'][course] = {
+				// 	color: getDepartmentColor(dep),
+				// 	shape: 'IDontWantAFuckingDot',
+				// 	label: course,
+				// 	link: data[course]['fullurl'],
+				// };
+
+				for (i = 0; i < prereqs.length; i++){
+					if (prereqs[i]['fulltext'] == '') {
+						continue;
+					}
+
+					// if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
+					// 	console.log('Recurze');
+					getAndDisplayPrereqConceptTreeHelper(prereqs[i]['fulltext']);
+					// }
+					
+
+					// nodeData['edges'][course] = {};
+					// nodeData['edges'][course][prereqs[i]['fulltext']] = {
+					// 	directed: true,
+					// 	color: "#000",
+					// };
+				}
+
+			}
+
+			started--;
+
+			if (started === 0) {
+				var sys = arbor.ParticleSystem(1000, 400, 0.5);
+				sys.parameters({gravity:true});
+				sys.renderer = Renderer("#tesseract");
+
+				sys.graft(nodeData);
+			}
+
+
+
+		},
+	});
+
+
+}
+
+getAndDisplayPrereqConceptTreeHelper = function (course) {
+	started++;
+
+	$.ajax({
+		url: '/api.php',
+		data: {
+			'action': 'ask',
+			'query': '[[Category:Concepts]][[' +  course + ']]|?Has concepts',
+			'format': 'json',
+		},
+		success: function(data) {
+
+
+			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
+			// sys.parameters({gravity:true});
+			// sys.renderer = Renderer("#tesseract");
+
+			data = data['query']['results'];
+
+			
+
+			for (course in data) {
+
+				// $.ajax({
+				// 	url: '/api.php',
+				// });
+
+				prereqs = data[course]['printouts']['Has concepts'];
+
+				output = [];
+
+				nodeData['nodes'][course] = {
+					color: 'red',
+					shape: 'Dot',
+					label: course,
+					link: data[course]['fullurl'],
+				};
+
+				for (i = 0; i < prereqs.length; i++){
+					if (prereqs[i]['fulltext'] == '') {
+						continue;
+					}
+
+					// if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
+					// 	console.log('Recurze');
+					// 	getAndDisplayPrereqConceptTreeHelper(prereqs[i]['fulltext']);
+					// }
+					
+
+					nodeData['edges'][course] = {};
+					nodeData['edges'][course][prereqs[i]['fulltext']] = {
+						directed: true,
+						color: "#000",
+					};
+				}
+
+			}
+
+			started--;
+
+			if (started === 0) {
+				var sys = arbor.ParticleSystem(1000, 400, 0.5);
+				sys.parameters({gravity:true});
+				sys.renderer = Renderer("#tesseract");
+
+				sys.graft(nodeData);
+			}
+
+
+
+		},
+	});
+
+
+}
+
 getAndDisplayConceptPrereqTree = function (course) {
 	started++;
 
@@ -377,7 +529,7 @@ jQuery(function($) {
 	} else if (typeof isConcept !== 'undefined') {
 		getAndDisplayConceptPrereqTree(coursenumber);
 	} else {
-		getAndDisplayPrereqTree(coursenumber);
+		getAndDisplayPrereqConceptTree(coursenumber);
 	}
 
 	
