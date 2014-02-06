@@ -191,14 +191,14 @@ getAndDisplayPrereqConceptTree = function (course) {
 
 				output = [];
 
-				nodeData['nodes'][course] = {
-					color: getDepartmentColor(dep),
-					shape: 'IDontWantAFuckingDot',
-					label: course,
-					link: data[course]['fullurl'],
-				};
+				// nodeData['nodes'][course] = {
+				// 	color: getDepartmentColor(dep),
+				// 	shape: 'IDontWantAFuckingDot',
+				// 	label: course,
+				// 	link: data[course]['fullurl'],
+				// };
 
-				nodeData['edges'][course] = {};
+				// nodeData['edges'][course] = {};
 				for (i = 0; i < prereqs.length; i++){
 					if (prereqs[i]['fulltext'] == '') {
 						continue;
@@ -208,13 +208,19 @@ getAndDisplayPrereqConceptTree = function (course) {
 					// 	console.log('Recurze');
 					getAndDisplayPrereqConceptTreeHelper(prereqs[i]['fulltext']);
 					// }
+
+					nodeData['nodes'][prereqs[i]['fulltext']] = {
+						color: 'red',
+						shape: 'IDontWantAFuckingDot',
+						label: course,
+						link: prereqs[i]['fullurl'],
+					};
 					
 
-					
 					nodeData['edges'][course][prereqs[i]['fulltext']] = {
-						directed: true,
-						color: "#000",
-					};
+					// 	directed: true,
+					// 	color: "#000",
+					// };
 				}
 
 			}
@@ -268,12 +274,12 @@ getAndDisplayPrereqConceptTreeHelper = function (course) {
 
 				output = [];
 
-				nodeData['nodes'][course] = {
-					color: 'red',
-					shape: 'Dot',
-					label: course,
-					link: data[course]['fullurl'],
-				};
+				// nodeData['nodes'][course] = {
+				// 	color: 'red',
+				// 	shape: 'Dot',
+				// 	label: course,
+				// 	link: data[course]['fullurl'],
+				// };
 
 				nodeData['edges'][course] = {};
 				for (i = 0; i < prereqs.length; i++){
@@ -281,16 +287,15 @@ getAndDisplayPrereqConceptTreeHelper = function (course) {
 						continue;
 					}
 
-					// if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
-					// 	console.log('Recurze');
-					// 	getAndDisplayPrereqConceptTreeHelper(prereqs[i]['fulltext']);
-					// }
+					if ((prereqs[i]['fulltext'] in nodeData['nodes'])){
+						// console.log('Recurze');
+						// getAndDisplayPrereqConceptTreeHelper(prereqs[i]['fulltext']);
+						nodeData['edges'][course][prereqs[i]['fulltext']] = {
+							directed: true,
+							color: "#000",
+						};
+					}
 					
-
-					nodeData['edges'][course][prereqs[i]['fulltext']] = {
-						directed: true,
-						color: "#000",
-					};
 				}
 
 			}
