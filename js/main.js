@@ -198,6 +198,7 @@ getAndDisplayPrereqConceptTree = function (course) {
 					link: data[course]['fullurl'],
 				};
 
+				nodeData['edges'][course] = {};
 				for (i = 0; i < prereqs.length; i++){
 					if (prereqs[i]['fulltext'] == '') {
 						continue;
@@ -209,7 +210,7 @@ getAndDisplayPrereqConceptTree = function (course) {
 					// }
 					
 
-					nodeData['edges'][course] = {};
+					
 					nodeData['edges'][course][prereqs[i]['fulltext']] = {
 						directed: true,
 						color: "#000",
@@ -274,6 +275,7 @@ getAndDisplayPrereqConceptTreeHelper = function (course) {
 					link: data[course]['fullurl'],
 				};
 
+				nodeData['edges'][course] = {};
 				for (i = 0; i < prereqs.length; i++){
 					if (prereqs[i]['fulltext'] == '') {
 						continue;
@@ -285,7 +287,6 @@ getAndDisplayPrereqConceptTreeHelper = function (course) {
 					// }
 					
 
-					nodeData['edges'][course] = {};
 					nodeData['edges'][course][prereqs[i]['fulltext']] = {
 						directed: true,
 						color: "#000",
