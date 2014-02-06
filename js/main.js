@@ -204,7 +204,7 @@ getAndDisplayConceptPrereqTree = function (course) {
 
 					if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
 						console.log('Recurze');
-						getAndDisplayPrereqTree(prereqs[i]['fulltext']);
+						getAndDisplayConceptPrereqTree(prereqs[i]['fulltext']);
 					}
 					
 
