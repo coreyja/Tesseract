@@ -536,12 +536,7 @@ jQuery(function($) {
 	} else if (typeof isConcept !== 'undefined') {
 		getAndDisplayConceptPrereqTree(coursenumber);
 	} else {
-		getAndDisplayPrereqConceptTree(coursenumber);
-
-		nodeData = {
-			nodes: {},
-			edges: {},
-		};
+		// getAndDisplayPrereqConceptTree(coursenumber);
 
 		getAndDisplayPrereqTree(coursenumber);
 	}
@@ -549,6 +544,11 @@ jQuery(function($) {
 	
 
 	$('a#showCourses').click(function () {
+		nodeData = {
+			nodes: {},
+			edges: {},
+		};
+		getAndDisplayPrereqTree(coursenumber);
 
 		$('a#showCourses').parent().addClass('active');
 		$('a#showConcepts').parent().removeClass('active');
@@ -560,6 +560,11 @@ jQuery(function($) {
 	});
 
 	$('a#showConcepts').click(function () {
+		nodeData = {
+			nodes: {},
+			edges: {},
+		};
+		getAndDisplayPrereqConceptTree(coursenumber);
 
 		$('a#showCourses').parent().removeClass('active');
 		$('a#showConcepts').parent().addClass('active');
