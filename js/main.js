@@ -146,7 +146,7 @@ getAndDisplayPrereqTree = function (course) {
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
 				sys.parameters({gravity:true});
-				sys.renderer = Renderer("#tesseract");
+				sys.renderer = Renderer("#tesseractCourse");
 
 				sys.graft(nodeData);
 			}
@@ -230,7 +230,7 @@ getAndDisplayPrereqConceptTree = function (course) {
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
 				sys.parameters({gravity:true});
-				sys.renderer = Renderer("#tesseract");
+				sys.renderer = Renderer("#tesseractConcept");
 
 				sys.graft(nodeData);
 			}
@@ -528,7 +528,7 @@ getAndDisplayConcepts = function() {
 jQuery(function($) {
 
 	var width = $('canvas#tesseract').parent().outerWidth()
-	$('canvas#tesseract').attr('width', width);
+	$('canvas').attr('width', width);
 
 
 	if (coursenumber == 'Tesseract'){
@@ -537,6 +537,7 @@ jQuery(function($) {
 		getAndDisplayConceptPrereqTree(coursenumber);
 	} else {
 		getAndDisplayPrereqConceptTree(coursenumber);
+		getAndDisplayPrereqTree(coursenumber);
 	}
 
 	
