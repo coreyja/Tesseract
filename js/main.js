@@ -536,44 +536,36 @@ jQuery(function($) {
 	} else if (typeof isConcept !== 'undefined') {
 		getAndDisplayConceptPrereqTree(coursenumber);
 	} else {
-		// getAndDisplayPrereqConceptTree(coursenumber);
+		getAndDisplayPrereqConceptTree(coursenumber);
+
+		nodeData = {
+			nodes: {},
+			edges: {},
+		};
+
 		getAndDisplayPrereqTree(coursenumber);
 	}
 
 	
 
 	$('a#showCourses').click(function () {
-		nodeData = {
-			nodes: {},
-			edges: {},
-		};
-
-		clearCanvas();
-		getAndDisplayPrereqTree(coursenumber);
 
 		$('a#showCourses').parent().addClass('active');
 		$('a#showConcepts').parent().removeClass('active');
 
-		$('canvas#tesseractCourse').hide();
-		$('canvas#tesseractConcept').show();
+		$('canvas#tesseractCourse').show();
+		$('canvas#tesseractConcept').hide();
 
 		return false;
 	});
 
 	$('a#showConcepts').click(function () {
-		nodeData = {
-			nodes: {},
-			edges: {},
-		};
-
-		clearCanvas();
-		getAndDisplayPrereqConceptTree(coursenumber);
 
 		$('a#showCourses').parent().removeClass('active');
 		$('a#showConcepts').parent().addClass('active');
 
-		$('canvas#tesseractCourse').show();
-		$('canvas#tesseractConcept').hide();
+		$('canvas#tesseractCourse').hide();
+		$('canvas#tesseractConcept').show();
 
 		return false;
 	});
