@@ -305,7 +305,7 @@ getAndDisplayPrereqConceptTreeHelper = function (course) {
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
 				sys.parameters({gravity:true});
-				sys.renderer = Renderer("#tesseract");
+				sys.renderer = Renderer("#tesseractConcept");
 
 				sys.graft(nodeData);
 			}
@@ -527,7 +527,7 @@ getAndDisplayConcepts = function() {
 
 jQuery(function($) {
 
-	var width = $('canvas#tesseract').parent().outerWidth()
+	var width = $('canvas').parent().outerWidth()
 	$('canvas').attr('width', width);
 
 
