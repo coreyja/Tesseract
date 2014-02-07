@@ -468,10 +468,10 @@ getAndDisplayCourse = function(course) {
 }
 
 clearCanvas = function() {
-	var canvas = $('#tesseract').get(0);
-	var ctx = canvas.getContext("2d");
+	// var canvas = $('#tesseract').get(0);
+	// var ctx = canvas.getContext("2d");
 
-	ctx.clearRect(0,0,canvas.width,canvas.height)
+	// ctx.clearRect(0,0,canvas.width,canvas.height)
 }
 
 getAndDisplayConcepts = function() {
