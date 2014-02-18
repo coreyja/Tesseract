@@ -89,7 +89,7 @@ getAndDisplayPrereqTree = function (course) {
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has prerequisites|?Has departments',
+			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has prerequisites|?Has corequisites|?Has departments',
 			'format': 'json',
 		},
 		success: function(data) {
@@ -99,6 +99,7 @@ getAndDisplayPrereqTree = function (course) {
 			for (course in data) {
 
 				prereqs = data[course]['printouts']['Has prerequisites'];
+				coreqs = data[course]['printouts']['Has corequisites'];
 				dep = data[course]['printouts']['Has departments'][0]['fulltext'];
 
 				output = [];
@@ -125,6 +126,24 @@ getAndDisplayPrereqTree = function (course) {
 					nodeData['edges'][course][prereqs[i]['fulltext']] = {
 						directed: true,
 						color: "#000",
+					};
+				}
+
+				for (i = 0; i < coreqs.length; i++){
+					if (coreqs[i]['fulltext'] == '') {
+						continue;
+					}
+
+					if (! (coreqs[i]['fulltext'] in nodeData['nodes'])){
+						console.log('Recurze');
+						getAndDisplayPrereqTree(coreqs[i]['fulltext']);
+					}
+					
+
+					nodeData['edges'][course] = {};
+					nodeData['edges'][course][coreqs[i]['fulltext']] = {
+						directed: true,
+						color: "#088e00",
 					};
 				}
 
