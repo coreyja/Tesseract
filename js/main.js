@@ -134,8 +134,9 @@ getAndDisplayPrereqTree = function (course) {
 
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
-				if (nodeData['nodes'].length != 1) {
-					sys.parameters({gravity:true});
+				if (nodeData['nodes'].length == 1) {
+				   //Stop single nodes bouncing all over the place
+				   sys.parameters({ friction: '1.0' });
 				}
 				sys.renderer = Renderer("#tesseractCourse");
 
