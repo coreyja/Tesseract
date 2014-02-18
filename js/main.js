@@ -134,7 +134,9 @@ getAndDisplayPrereqTree = function (course) {
 
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
-				sys.parameters({gravity:true});
+				if (nodeData['nodes'].length != 1) {
+					sys.parameters({gravity:true});
+				}
 				sys.renderer = Renderer("#tesseractCourse");
 
 				sys.graft(nodeData);
