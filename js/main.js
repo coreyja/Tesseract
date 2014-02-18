@@ -98,6 +98,8 @@ getAndDisplayPrereqTree = function (course) {
 
 			for (course in data) {
 
+				nodeData['edges'][course] = {};
+
 				prereqs = data[course]['printouts']['Has prerequisites'];
 				coreqs = data[course]['printouts']['Has corequisites'];
 				dep = data[course]['printouts']['Has departments'][0]['fulltext'];
@@ -122,7 +124,6 @@ getAndDisplayPrereqTree = function (course) {
 					}
 					
 
-					nodeData['edges'][course] = {};
 					nodeData['edges'][course][prereqs[i]['fulltext']] = {
 						directed: true,
 						color: "#000",
@@ -140,9 +141,9 @@ getAndDisplayPrereqTree = function (course) {
 					}
 					
 
-					nodeData['edges'][course] = {};
+					
 					nodeData['edges'][course][coreqs[i]['fulltext']] = {
-						directed: true,
+						directed: false,
 						color: "#088e00",
 					};
 				}
