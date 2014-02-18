@@ -94,20 +94,9 @@ getAndDisplayPrereqTree = function (course) {
 		},
 		success: function(data) {
 
-
-			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
-			// sys.parameters({gravity:true});
-			// sys.renderer = Renderer("#tesseract");
-
 			data = data['query']['results'];
 
-			
-
 			for (course in data) {
-
-				// $.ajax({
-				// 	url: '/api.php',
-				// });
 
 				prereqs = data[course]['printouts']['Has prerequisites'];
 				dep = data[course]['printouts']['Has departments'][0]['fulltext'];
@@ -171,62 +160,41 @@ getAndDisplayPrereqConceptTree = function (course) {
 		},
 		success: function(data) {
 
-
-			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
-			// sys.parameters({gravity:true});
-			// sys.renderer = Renderer("#tesseract");
-
+			// Move the data array to where the actual data is
 			data = data['query']['results'];
 
 			
-
+			// Run over all the courses in data
 			for (course in data) {
 
-				// $.ajax({
-				// 	url: '/api.php',
-				// });
+				// Get the concepts from the data
+				concepts = data[course]['printouts']['Has concepts'];
 
-				prereqs = data[course]['printouts']['Has concepts'];
-				dep = data[course]['printouts']['Has departments'][0]['fulltext'];
-
-				output = [];
-
-				// nodeData['nodes'][course] = {
-				// 	color: getDepartmentColor(dep),
-				// 	shape: 'IDontWantAFuckingDot',
-				// 	label: course,
-				// 	link: data[course]['fullurl'],
-				// };
-
-				// nodeData['edges'][course] = {};
-				for (i = 0; i < prereqs.length; i++){
-					if (prereqs[i]['fulltext'] == '') {
+				// Loop over all the concepts and call the helper on each one and create a node for it
+				for (i = 0; i < concepts.length; i++){
+					if (concepts[i]['fulltext'] == '') {
 						continue;
 					}
 
-					// if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
-					// 	console.log('Recurze');
-					getAndDisplayPrereqConceptTreeHelper(prereqs[i]['fulltext']);
-					// }
+					//Call the helper for each concept
+					getAndDisplayPrereqConceptTreeHelper(concepts[i]['fulltext']);
 
-					nodeData['nodes'][prereqs[i]['fulltext']] = {
+					// Create the actual node
+					nodeData['nodes'][concepts[i]['fulltext']] = {
 						color: 'red',
 						shape: 'IDontWantAFuckingDot',
-						label: prereqs[i]['fulltext'],
-						link: prereqs[i]['fullurl'],
+						label: concepts[i]['fulltext'],
+						link: concepts[i]['fullurl'],
 					};
 					
-
-					// nodeData['edges'][course][prereqs[i]['fulltext']] = {
-					// 	directed: true,
-					// 	color: "#000",
-					// };
 				}
 
 			}
 
+			// Decrease the started counter since we are done
 			started--;
 
+			// Once all the started ajax's are done, initialize the Tesseract
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
 				sys.parameters({gravity:true});
@@ -243,53 +211,40 @@ getAndDisplayPrereqConceptTree = function (course) {
 
 }
 
-getAndDisplayPrereqConceptTreeHelper = function (course) {
+getAndDisplayPrereqConceptTreeHelper = function (concept) {
 	started++;
 
 	$.ajax({
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Concepts]][[' +  course + ']]|?Has concepts',
+			'query': '[[Category:Concepts]][[' +  concept + ']]|?Has concepts',
 			'format': 'json',
 		},
 		success: function(data) {
 
 
-			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
-			// sys.parameters({gravity:true});
-			// sys.renderer = Renderer("#tesseract");
-
 			data = data['query']['results'];
 
 			
 
-			for (course in data) {
+			for (concept in data) {
 
-				// $.ajax({
-				// 	url: '/api.php',
-				// });
 
-				prereqs = data[course]['printouts']['Has concepts'];
+				prereqs = data[concept]['printouts']['Has concepts'];
 
 				output = [];
 
-				// nodeData['nodes'][course] = {
-				// 	color: 'red',
-				// 	shape: 'Dot',
-				// 	label: course,
-				// 	link: data[course]['fullurl'],
-				// };
-
-				nodeData['edges'][course] = {};
+				// Create the edges for each pre-req found
+				nodeData['edges'][concept] = {};
 				for (i = 0; i < prereqs.length; i++){
 					if (prereqs[i]['fulltext'] == '') {
 						continue;
 					}
 
+					// Only add the edge if the node is already there
+					// Which means the concept is related to the original course
 					if ((prereqs[i]['fulltext'] in nodeData['nodes'])){
-						// console.log('Recurze');
-						// getAndDisplayPrereqConceptTreeHelper(prereqs[i]['fulltext']);
 						nodeData['edges'][course][prereqs[i]['fulltext']] = {
 							directed: true,
 							color: "#000",
@@ -300,11 +255,16 @@ getAndDisplayPrereqConceptTreeHelper = function (course) {
 
 			}
 
+			// Decrease the started counter since we are done
 			started--;
 
+			// Once all the started ajax's are done, initialize the Tesseract
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
-				sys.parameters({gravity:true});
+				if (nodeData['nodes'].length != 1) {
+					sys.parameters({gravity:true});
+				}
+				
 				sys.renderer = Renderer("#tesseractConcept");
 
 				sys.graft(nodeData);
@@ -318,37 +278,26 @@ getAndDisplayPrereqConceptTreeHelper = function (course) {
 
 }
 
-getAndDisplayConceptPrereqTree = function (course) {
+getAndDisplayConceptPrereqTree = function (concept) {
 	started++;
 
 	$.ajax({
 		url: '/api.php',
 		data: {
 			'action': 'ask',
-			'query': '[[Category:Concepts]][[' +  course + ']]|?Has concepts',
+			'query': '[[Category:Concepts]][[' +  concept + ']]|?Has concepts',
 			'format': 'json',
 		},
 		success: function(data) {
 
-
-			// var sys = arbor.ParticleSystem(1000, 400, 0.5);
-			// sys.parameters({gravity:true});
-			// sys.renderer = Renderer("#tesseract");
-
 			data = data['query']['results'];
 
-			
+			for (concept in data) {
 
-			for (course in data) {
+				// Get the pre-reqs
+				prereqs = data[concept]['printouts']['Has concepts'];
 
-				// $.ajax({
-				// 	url: '/api.php',
-				// });
-
-				prereqs = data[course]['printouts']['Has concepts'];
-
-				output = [];
-
+				// Create nodes
 				nodeData['nodes'][course] = {
 					color: 'red',
 					shape: 'IDontWantAFuckingDot',
@@ -356,17 +305,18 @@ getAndDisplayConceptPrereqTree = function (course) {
 					link: data[course]['fullurl'],
 				};
 
+				// Loop over all the pre-reqs
 				for (i = 0; i < prereqs.length; i++){
 					if (prereqs[i]['fulltext'] == '') {
 						continue;
 					}
 
+					// If the node doesn't exist recurse
 					if (! (prereqs[i]['fulltext'] in nodeData['nodes'])){
-						console.log('Recurze');
 						getAndDisplayConceptPrereqTree(prereqs[i]['fulltext']);
 					}
 					
-
+					// Create the edges
 					nodeData['edges'][course] = {};
 					nodeData['edges'][course][prereqs[i]['fulltext']] = {
 						directed: true,
@@ -376,8 +326,10 @@ getAndDisplayConceptPrereqTree = function (course) {
 
 			}
 
+			// Decrease the started counter since we are done
 			started--;
 
+			// Once all the started ajax's are done, initialize the Tesseract
 			if (started === 0) {
 				var sys = arbor.ParticleSystem(1000, 400, 0.5);
 				sys.parameters({gravity:true});
@@ -394,156 +346,26 @@ getAndDisplayConceptPrereqTree = function (course) {
 
 }
 
-getAndDisplayCourse = function(course) {
-	console.log("How many times?");	
-
-	$.ajax({
-		url: '/api.php',
-		data: {
-			'action': 'ask',
-			'query': '[[Category:Courses]][[Course Number::~' +  course + ']]|?Has courses|?Department' ,
-			'format': 'json',
-		},
-		success: function(data) {
-
-
-			var sys = arbor.ParticleSystem(1000, 400, 0.5);
-			sys.parameters({gravity:true});
-			sys.renderer = Renderer("#tesseract");
-
-			data = data['query']['results'];
-
-			var nodeData = {
-				nodes: {},
-				edges: {},
-			};
-
-			for (course in data) {
-
-				$.ajax({
-					url: '/api.php',
-				});
-
-				prereqs = data[course]['printouts']['Has courses'];
-
-				output = [];
-
-				nodeData['nodes'][course] = {
-					color: 'red',
-					shape: 'IDontWantAFuckingDot',
-					label: course,
-					link: data[course]['fullurl'],
-				};
-
-				for (i = 0; i < prereqs.length; i++){
-					if (prereqs[i]['fulltext'] == '') {
-						continue;
-					}
-
-					var prereqTitle = prereqs[i]['fulltext'];
-					var prereqURL = prereqs[i]['fullurl'];
-
-					nodeData['edges'][course] = {};
-					nodeData['edges'][course][prereqTitle] = {
-						directed: true,
-						color: "#000",
-					};
-
-					nodeData['nodes'][prereqTitle] = {
-						color: 'red',
-						shape: 'IDontWantAFuckingDot',
-						label: prereqTitle,
-						link: prereqURL,
-					};
-				}
-
-			}
-
-			sys.graft(nodeData);
-
-
-
-		},
-	});
-}
-
-clearCanvas = function() {
-	// var canvas = $('#tesseract').get(0);
-	// var ctx = canvas.getContext("2d");
-
-	// ctx.clearRect(0,0,canvas.width,canvas.height)
-}
-
-getAndDisplayConcepts = function() {
-	$.ajax({
-		url: '/api.php',
-		data: {
-			'action': 'ask',
-			'query': '[[Category:Concepts]]|?Has concepts',
-			'format': 'json',
-		},
-		success: function(data) {
-
-			var sys = arbor.ParticleSystem(1000, 400, 0.5);
-			sys.parameters({gravity:true});
-			sys.renderer = Renderer("#tesseract");
-
-			data = data['query']['results'];
-
-			var nodeData = {
-				nodes: {},
-				edges: {},
-			};
-
-			for (concept in data) {
-				related = data[concept]['printouts']['Has concepts'];
-
-				output = [];
-
-				nodeData['nodes'][concept] = {
-					shape: 'dot',
-					label: concept,
-					link: data[concept]['fullurl'],
-					color: 'red',
-				};
-
-				for (i = 0; i < related.length; i++){
-					nodeData['edges'][concept] = {};
-					nodeData['edges'][concept][related[i]['fulltext']] = {
-
-						color: "#000",
-					};
-				}
-
-			}
-
-			sys.graft(nodeData);
-
-
-
-		},
-	});
-}
-
 jQuery(function($) {
 
+	// Set the width of the canvas objects to the width of their parent
 	var width = $('canvas').parent().outerWidth()
 	$('canvas').attr('width', width);
 
 
+	// Do the correct call based on what page we are on
 	if (coursenumber == 'Tesseract'){
 		getAndDisplayCourses();
 	} else if (typeof isConcept !== 'undefined') {
 		getAndDisplayConceptPrereqTree(coursenumber);
 	} else {
-		// getAndDisplayPrereqConceptTree(coursenumber);
-
 		getAndDisplayPrereqTree(coursenumber);
 	}
 
 	
-
+	// On Click Listener for Course Tab
 	$('a#showCourses').click(function () {
+		// Reset the Node data
 		nodeData = {
 			nodes: {},
 			edges: {},
@@ -559,7 +381,9 @@ jQuery(function($) {
 		return false;
 	});
 
+	// On Click Listener For Concepts Tab
 	$('a#showConcepts').click(function () {
+		// Reset the Node data
 		nodeData = {
 			nodes: {},
 			edges: {},
