@@ -37,6 +37,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
                     'format': 'json'
                 },
                 success: function(data) {
+                    console.log(data);
                     resolve(data['query']['results']);
                 },
                 error: function (data) {
@@ -52,6 +53,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
         return this.getASKQuery(query).then(function (data){
             // Get only the first item in the list, as we only want one course
+            console.log(data);
             return data[0];
         });
 
