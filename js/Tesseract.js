@@ -113,6 +113,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
     }
 
     Tesseract.prototype.addCoursePrereqTree = function (course) {
+        console.log(course);
         // Get the course data
         var courseDataPromise = this.getCourseData(course);
 
