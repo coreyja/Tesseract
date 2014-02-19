@@ -107,7 +107,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             var course = courseData['fulltext']
             var prereqs = courseData['printouts']['Has prerequisites'];
 
-            that.nodeData['edges'][course] = {};
+            that.nodeData['edges'][course] = that.nodeData['edges'][course] || {};
             for (var i = 0; i < prereqs.length; i++){
                 if (prereqs[i]['fulltext'] == '') {
                     continue;
@@ -126,7 +126,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             var course = courseData['fulltext']
             var prereqs = courseData['printouts']['Has corequisites'];
 
-            that.nodeData['edges'][course] = {};
+            that.nodeData['edges'][course] = that.nodeData['edges'][course] || {};
             for (var i = 0; i < prereqs.length; i++){
                 if (prereqs[i]['fulltext'] == '') {
                     continue;
@@ -191,7 +191,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
             // Add all the edges for this Course
             promises.push(courseDataPromise.then(that.addCoursePrereqEdges));
-            // promises.push(courseDataPromise.then(that.addCourseCoreqEdges));
+            promises.push(courseDataPromise.then(that.addCourseCoreqEdges));
 
             // Recurse on all the Prereqs
             promises.push(courseDataPromise.then(function (courseData) {
