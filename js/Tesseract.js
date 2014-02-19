@@ -122,6 +122,25 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             return courseData;
         }
 
+        that.addCourseCoreqEdges = function (courseData) {
+            var course = courseData['fulltext']
+            var prereqs = courseData['printouts']['Has corequisites'];
+
+            that.nodeData['edges'][course] = {};
+            for (var i = 0; i < prereqs.length; i++){
+                if (prereqs[i]['fulltext'] == '') {
+                    continue;
+                }
+
+                that.nodeData['edges'][course][prereqs[i]['fulltext']] = {
+                    directed: false,
+                    color: "#008b0a"
+                };
+            }
+
+            return courseData;
+        }
+
         that.addConceptPrereqEdges = function (conceptData) {
             var concept = conceptData['fulltext'];
             var concepts = conceptData['printouts']['Has concepts'];
@@ -172,6 +191,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
             // Add all the edges for this Course
             promises.push(courseDataPromise.then(that.addCoursePrereqEdges));
+            promises.push(courseDataPromise.then(that.addCourseCoreqEdges));
 
             // Recurse on all the Prereqs
             promises.push(courseDataPromise.then(function (courseData) {
