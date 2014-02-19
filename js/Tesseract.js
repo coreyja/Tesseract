@@ -96,7 +96,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
     Tesseract.prototype.addCoursePrereqEdges = function (courseData) {
         var course = courseData['fulltext']
-        var prereqs = courseData['printouts']['Has courses'];
+        var prereqs = courseData['printouts']['Has prerequisites'];
 
         for (var i = 0; i < prereqs.length; i++){
             if (prereqs[i]['fulltext'] == '') {
@@ -116,6 +116,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
         console.log(course);
         // Get the course data
         var courseDataPromise = this.getCourseData(course);
+        console.log(course);
 
         var promises = [];
 
@@ -127,7 +128,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
         // Recurse on all the Prereqs
         promises.push(courseDataPromise.then(function (courseData) {
-            var prereqs = courseData['printouts']['Has courses'];
+            var prereqs = courseData['printouts']['Has prerequisites'];
 
             var promises = [];
 
