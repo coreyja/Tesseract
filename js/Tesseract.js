@@ -191,7 +191,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
             // Add all the edges for this Course
             promises.push(courseDataPromise.then(that.addCoursePrereqEdges));
-            promises.push(courseDataPromise.then(that.addCourseCoreqEdges));
+            // promises.push(courseDataPromise.then(that.addCourseCoreqEdges));
 
             // Recurse on all the Prereqs
             promises.push(courseDataPromise.then(function (courseData) {
