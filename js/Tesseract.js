@@ -66,18 +66,78 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
         });
     }
 
-    Tesseract.prototype.addNodes = function(pages) {
+
+
+    Tesseract.prototype.addConceptNodes = function(pages) {
 
         for (var page in pages) {
             nodeData['nodes'][page] = {
                 shape: 'dot',
                 label: page,
                 link: pages[page]['fullurl'],
-                color: 'red',
+                color: 'red'
             }
         }
 
         return pages;
+    }
+
+    Tesseract.prototype.addCourseNode = function(courseData) {
+
+        nodeData['nodes'][courseData.fulltext] = {
+            shape: 'dot',
+            label: courseData.fulltext,
+            link: courseData.fullurl,
+            color: this.getColorByDepartment(courseData['printouts']['Has departments'][0]['fulltext'])
+        }
+
+        return courseData;
+    }
+
+    Tesseract.prototype.addCoursePrereqEdges = function (courseData) {
+        var course = courseData['fulltext']
+        var prereqs = courseData['printouts']['Has courses'];
+
+        for (var i = 0; i < prereqs.length; i++){
+            if (prereqs[i]['fulltext'] == '') {
+                continue;
+            }
+            nodeData['edges'][course] = {};
+            nodeData['edges'][course][prereqs[i]['fulltext']] = {
+                directed: true,
+                color: "#000"
+            };
+        }
+
+        return courseData;
+    }
+
+    Tesseract.prototype.addCoursePrereqTree = function (course) {
+        // Get the course data
+        var courseDataPromise = this.getCourseData(course);
+
+        var promises = [];
+
+        // Add the course to the Node list
+        promises.push(courseDataPromise.then(this.addCourseNode));
+
+        // Add all the edges for this Course
+        promises.push(courseDataPromise.then(this.addCoursePrereqEdges));
+
+        // Recurse on all the Prereqs
+        promises.push(courseDataPromise.then(function (courseData) {
+            var prereqs = courseData['printouts']['Has courses'];
+
+            var promises = [];
+
+            for (var i = 0; i < prereqs.length; i++){
+                promises.push(this.addCoursePrereqTree(prereqs[i]['fulltext']));
+            }
+
+            return Promise.all(promises);
+        }));
+
+        return Promise.all(promises);
     }
 
     // TODO: Add the rest of the majors to this function
