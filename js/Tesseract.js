@@ -196,11 +196,16 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             // Recurse on all the Prereqs
             promises.push(courseDataPromise.then(function (courseData) {
                 var prereqs = courseData['printouts']['Has prerequisites'];
+                var coreqs = courseData['printouts']['Has corequisites'];
 
                 var promises = [];
 
                 for (var i = 0; i < prereqs.length; i++){
                     promises.push(that.addCoursePrereqTree(prereqs[i]['fulltext']));
+                }
+
+                for (var i = 0; i < coreqs.length; i++){
+                    promises.push(that.addCoursePrereqTree(coreqs[i]['fulltext']));
                 }
 
                 return Promise.all(promises);
