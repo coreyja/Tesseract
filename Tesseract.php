@@ -48,8 +48,11 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 	// Put the title as the course number for js to read.
 	$toReturn .= '<script> coursenumber = "' . $parser->getTitle() . '";</script>';
 
+    // Add the Promises Polyfill
+    $toReturn .= '<script src="http://s3.amazonaws.com/es6-promises/promise-0.1.1.min.js"></script>';
+
 	// Add the js import for the Tesseract
-	$toReturn .= '<script src="/extensions/Tesseract/js/arbor.js"></script><script src="/extensions/Tesseract/js/graphics.js"></script><script src="/extensions/Tesseract/js/renderer.js"></script><script src="/extensions/Tesseract/js/main.js"></script>';
+	$toReturn .= '<script src="/extensions/Tesseract/js/arbor.js"></script><script src="/extensions/Tesseract/js/graphics.js"></script><script src="/extensions/Tesseract/js/renderer.js"></script><script src="/extensions/Tesseract/js/Tesseract.js"></script><script src="/extensions/Tesseract/js/main.js"></script>';
 
 	return $toReturn;
 }
