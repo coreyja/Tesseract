@@ -68,9 +68,9 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
         that.addConceptNodes = function(pages) {
 
             for (var page in pages) {
-                that.nodeData['nodes'][page] = {
-                    shape: 'dot',
-                    label: page,
+                that.nodeData['nodes'][pages[page]['fulltext']] = {
+                    shape: 'IDontWantAFuckingDot',
+                    label: pages[page]['fulltext'],
                     link: pages[page]['fullurl'],
                     color: 'red'
                 }
@@ -82,7 +82,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
         that.addCourseNode = function(courseData) {
 
             that.nodeData['nodes'][courseData.fulltext] = {
-                shape: 'dot',
+                shape: 'IDontWantAFuckingDot',
                 label: courseData.fulltext,
                 link: courseData.fullurl,
                 color: that.getColorByDepartment(courseData['printouts']['Has departments'][0]['fulltext'])
@@ -91,15 +91,28 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             return courseData;
         }
 
+        that.addNode = function(nodeData) {
+
+            that.nodeData['nodes'][nodeData.fulltext] = {
+                shape: 'IDontWantAFuckingDot',
+                label: nodeData.fulltext,
+                link: nodeData.fullurl,
+                color: 'red'
+            }
+
+            return nodeData;
+        }
+
         that.addCoursePrereqEdges = function (courseData) {
             var course = courseData['fulltext']
             var prereqs = courseData['printouts']['Has prerequisites'];
 
+            that.nodeData['edges'][course] = {};
             for (var i = 0; i < prereqs.length; i++){
                 if (prereqs[i]['fulltext'] == '') {
                     continue;
                 }
-                that.nodeData['edges'][course] = {};
+
                 that.nodeData['edges'][course][prereqs[i]['fulltext']] = {
                     directed: true,
                     color: "#000"
@@ -109,11 +122,48 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             return courseData;
         }
 
+        that.addConceptPrereqEdges = function (conceptData) {
+            var concept = conceptData['fulltext'];
+            var concepts = conceptData['printouts']['Has concepts'];
+
+
+            that.nodeData.edges[concept] = {};
+            for (var i = 0; i < concepts.length; i++) {
+
+                that.nodeData.edges[concept][concepts[i]['fulltext']] = {
+                    directed: true,
+                    color: '#000'
+                };
+            }
+
+            return conceptData;
+        }
+
+        that.addConceptGraphEdges = function (conceptData) {
+            var concept = conceptData['fulltext'];
+            var concepts = conceptData['printouts']['Has concepts'];
+
+
+            that.nodeData.edges[concept] = {};
+            for (var i = 0; i < concepts.length; i++) {
+                // If the concept isn't in the Nodes don't add the edges
+                if (!(concepts[i]['fulltext'] in that.nodeData.nodes)) {
+                    continue;
+                }
+
+                that.nodeData.edges[concept][concepts[i]['fulltext']] = {
+                    directed: true,
+                    color: '#000'
+                };
+            }
+
+            return conceptData;
+        }
+
         that.addCoursePrereqTree = function (course) {
-            console.log(course);
+
             // Get the course data
             var courseDataPromise = that.getCourseData(course);
-            console.log(course);
 
             var promises = [];
 
@@ -137,6 +187,66 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             }));
 
             return Promise.all(promises);
+        }
+
+        that.addConceptPrereqTree = function (concept) {
+            // Get the concept data
+            var conceptDataPromise = that.getConceptData(concept);
+
+            var promises = [];
+
+
+            promises.push(conceptDataPromise.then(function (conceptData){
+                // Add the concept to the Node list
+                that.addNode(conceptData);
+
+                // Add all the edges for this concept
+                return that.addConceptPrereqEdges(conceptData);
+            }));
+
+            // Recurse on all the Prereqs
+            promises.push(conceptDataPromise.then(function (conceptData) {
+                var concepts = conceptData['printouts']['Has concepts'];
+
+                var promises = [];
+
+                for (var i = 0; i < concepts.length; i++){
+                    promises.push(that.addConceptPrereqTree(concepts[i]['fulltext']));
+                }
+
+                return Promise.all(promises);
+            }));
+
+            return Promise.all(promises);
+        }
+
+        that.addCourseConceptGraph = function (course) {
+            // Get the course data
+            var courseDataPromise = that.getCourseData(course);
+
+            // Add all of the concept nodes
+            return courseDataPromise.then(function (courseData){
+                var concepts = courseData['printouts']['Has concepts'];
+
+                that.addConceptNodes(concepts);
+
+                var promises = [];
+
+                for (var i = 0; i < concepts.length; i++){
+                    promises.push(that.getConceptData(concepts[i]['fulltext']).then(that.addConceptGraphEdges));
+                }
+
+                return Promise.all(promises);
+            });
+
+        }
+
+        that.showArborJSGraph = function () {
+            var sys = arbor.ParticleSystem(1000, 400, 0.5);
+            sys.parameters({gravity:true});
+            sys.renderer = Renderer(that.canvasTag);
+
+            sys.graft(that.nodeData);
         }
 
         // TODO: Add the rest of the majors to this function
