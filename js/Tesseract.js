@@ -163,7 +163,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             var concepts = conceptData['printouts']['Has concepts'];
 
 
-            that.nodeData.edges[concept] = {};
+            that.nodeData.edges[concept] = that.nodeData.edges[concept] || {};
             for (var i = 0; i < concepts.length; i++) {
                 // If the concept isn't in the Nodes don't add the edges
                 if (!(concepts[i]['fulltext'] in that.nodeData.nodes)) {
