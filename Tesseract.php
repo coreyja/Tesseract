@@ -33,22 +33,25 @@ function TesseractRender( $input, array $args, Parser $parser, PPFrame $frame ) 
 	// Add the css import for Tesseract styling
 	$toReturn .= '<link rel="stylesheet" href="/extensions/Tesseract/css/style.css">';
 
+    $toReturn .= '<h2>Tesseract</h2>';
 
-	// Add the tabs that go on top of the Tesseract
-	$toReturn .= '<ul class="tabs"><li class="tab active"><a href="#" id="showCourses">Show Courses</a></li><li class="tab"><a href="#" id="showConcepts">Show Concepts</a></li></ul>';
+	if ($args['isconcept'] == "true") {
+	    $toReturn .= '<canvas id="Tesseract" width="1000" height="600" ></canvas>';
+	} else {
+	    // Add the tabs that go on top of the Tesseract
+        $toReturn .= '<ul class="tabs"><li class="tab active"><a href="#" id="showCourses">Show Courses</a></li><li class="tab"><a href="#" id="showConcepts">Show Concepts</a></li></ul>';
 
-	// Add the actual Canvas that the Tesseract will display inside
-	$toReturn .= '<canvas id="tesseractCourse" width="1000" height="600"></canvas>';
-	$toReturn .= '<canvas id="tesseractConcept" width="1000" height="600" style="display: none;"></canvas>';
-
-	$toReturn .= '<canvas id="tesseract2" width="1000" height="600" ></canvas>';
+        // Add the actual Canvas that the Tesseract will display inside
+        $toReturn .= '<canvas id="TesseractCourse" width="1000" height="600"></canvas>';
+        $toReturn .= '<canvas id="TesseractConcept" width="1000" height="600" style="display: none;"></canvas>';
+	}
 
 	foreach( $args as $name => $value ) {
 		$toReturn .= '<script>' . htmlspecialchars( $name ). ' = "' . htmlspecialchars( $value ) . '";</script>';
 	}
 
 	// Put the title as the course number for js to read.
-	$toReturn .= '<script> coursenumber = "' . $parser->getTitle() . '";</script>';
+	$toReturn .= '<script> pageTitle = "' . $parser->getTitle() . '";</script>';
 
     // Add the Promises Polyfill
     $toReturn .= '<script src="http://s3.amazonaws.com/es6-promises/promise-0.1.1.min.js"></script>';

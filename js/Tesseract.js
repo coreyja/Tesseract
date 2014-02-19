@@ -243,7 +243,20 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
         that.showArborJSGraph = function () {
             var sys = arbor.ParticleSystem(1000, 400, 0.5);
-            sys.parameters({gravity:true});
+
+
+            var count = 0;
+
+            for (var i in that.nodeData.nodes) {
+                if (that.nodeData.nodes.hasOwnProperty(i)) {
+                    count++;
+                }
+            }
+
+            if (count === 1) {
+                sys.parameters({friction: 1.0});
+            }
+
             sys.renderer = Renderer(that.canvasTag);
 
             sys.graft(that.nodeData);
