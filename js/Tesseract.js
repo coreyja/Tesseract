@@ -71,7 +71,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
     Tesseract.prototype.addConceptNodes = function(pages) {
 
         for (var page in pages) {
-            nodeData['nodes'][page] = {
+            this.nodeData['nodes'][page] = {
                 shape: 'dot',
                 label: page,
                 link: pages[page]['fullurl'],
@@ -84,7 +84,7 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
 
     Tesseract.prototype.addCourseNode = function(courseData) {
 
-        nodeData['nodes'][courseData.fulltext] = {
+        this.nodeData['nodes'][courseData.fulltext] = {
             shape: 'dot',
             label: courseData.fulltext,
             link: courseData.fullurl,
@@ -102,8 +102,8 @@ var TESSERACT_BASE_URL = 'http://semanticwiki.csse.rose-hulman.edu';
             if (prereqs[i]['fulltext'] == '') {
                 continue;
             }
-            nodeData['edges'][course] = {};
-            nodeData['edges'][course][prereqs[i]['fulltext']] = {
+            this.nodeData['edges'][course] = {};
+            this.nodeData['edges'][course][prereqs[i]['fulltext']] = {
                 directed: true,
                 color: "#000"
             };
